@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Users } from 'lucide-react';
+import { Plus, Trash2, Pencil, Users } from 'lucide-react';
 import { employeeAPI } from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
@@ -18,6 +18,7 @@ export default function Employees() {
   const [formErrors, setFormErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [editingEmployee, setEditingEmployee] = useState(null);
 
   const fetchEmployees = async () => {
     setLoading(true);
@@ -53,10 +54,12 @@ export default function Employees() {
     if (!validateForm()) return;
     setSubmitting(true);
     try {
-      await employeeAPI.create(form);
-      setShowModal(false);
-      setForm(initialForm);
-      setFormErrors({});
+      if (editingEmployee) {
+        await employeeAPI.update(editingEmployee.id, form);
+      } else {
+        await employeeAPI.create(form);
+      }
+      closeModal();
       fetchEmployees();
     } catch (err) {
       const data = err.response?.data;
@@ -70,6 +73,25 @@ export default function Employees() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const openEdit = (emp) => {
+    setEditingEmployee(emp);
+    setForm({
+      employee_id: emp.employee_id,
+      full_name: emp.full_name,
+      email: emp.email,
+      department: emp.department,
+    });
+    setFormErrors({});
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setForm(initialForm);
+    setFormErrors({});
+    setEditingEmployee(null);
   };
 
   const handleDelete = async (id) => {
@@ -97,7 +119,7 @@ export default function Employees() {
           <h1>Employees</h1>
           <p className="page-subtitle">Manage your employee records</p>
         </div>
-        <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+        <button className="btn btn-primary" onClick={() => { setEditingEmployee(null); setForm(initialForm); setFormErrors({}); setShowModal(true); }}>
           <Plus size={18} /> Add Employee
         </button>
       </div>
@@ -139,9 +161,14 @@ export default function Employees() {
                         <button className="btn btn-secondary btn-sm" onClick={() => setDeleteConfirm(null)}>No</button>
                       </div>
                     ) : (
-                      <button className="btn-icon danger" onClick={() => setDeleteConfirm(emp.id)} title="Delete">
-                        <Trash2 size={16} />
-                      </button>
+                      <div className="action-buttons">
+                        <button className="btn-icon edit" onClick={() => openEdit(emp)} title="Edit">
+                          <Pencil size={16} />
+                        </button>
+                        <button className="btn-icon danger" onClick={() => setDeleteConfirm(emp.id)} title="Delete">
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                     )}
                   </td>
                 </tr>
@@ -153,7 +180,7 @@ export default function Employees() {
       )}
 
       {showModal && (
-        <Modal title="Add New Employee" onClose={() => { setShowModal(false); setFormErrors({}); }}>
+        <Modal title={editingEmployee ? 'Edit Employee' : 'Add New Employee'} onClose={closeModal}>
           <form onSubmit={handleSubmit} className="form">
             <div className="form-group">
               <label htmlFor="employee_id">Employee ID</label>
@@ -205,11 +232,11 @@ export default function Employees() {
               {formErrors.department && <span className="field-error">{formErrors.department}</span>}
             </div>
             <div className="form-actions">
-              <button type="button" className="btn btn-secondary" onClick={() => { setShowModal(false); setFormErrors({}); }}>
+              <button type="button" className="btn btn-secondary" onClick={closeModal}>
                 Cancel
               </button>
               <button type="submit" className="btn btn-primary" disabled={submitting}>
-                {submitting ? 'Adding...' : 'Add Employee'}
+                {submitting ? 'Saving...' : (editingEmployee ? 'Update Employee' : 'Add Employee')}
               </button>
             </div>
           </form>
