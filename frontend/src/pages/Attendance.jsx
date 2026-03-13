@@ -176,6 +176,7 @@ export default function Attendance() {
 
       {!loading && !error && records.length > 0 && (
         <div className="card">
+          <div className="table-wrapper">
           <table className="table">
             <thead>
               <tr>
@@ -219,6 +220,7 @@ export default function Attendance() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 

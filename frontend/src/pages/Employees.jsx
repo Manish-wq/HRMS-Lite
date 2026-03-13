@@ -111,6 +111,7 @@ export default function Employees() {
 
       {!loading && !error && employees.length > 0 && (
         <div className="card">
+          <div className="table-wrapper">
           <table className="table">
             <thead>
               <tr>
@@ -147,6 +148,7 @@ export default function Employees() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 

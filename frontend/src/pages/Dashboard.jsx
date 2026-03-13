@@ -98,6 +98,7 @@ export default function Dashboard() {
         return (
           <div className="card">
             <h2 className="card-title">Department Breakdown</h2>
+            <div className="table-wrapper">
             <table className="table">
               <thead>
                 <tr>
@@ -116,6 +117,7 @@ export default function Dashboard() {
                 ))}
               </tbody>
             </table>
+            </div>
             {totalPages > 1 && (
               <div className="pagination">
                 <button

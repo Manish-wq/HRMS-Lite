@@ -1,6 +1,9 @@
 .modal-overlay {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
@@ -12,7 +15,7 @@
 .modal-content {
   background: #fff;
   border-radius: 12px;
-  width: 100%;
+  width: calc(100% - 2rem);
   max-width: 500px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   animation: modalIn 0.2s ease-out;
