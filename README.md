@@ -19,7 +19,7 @@ A full-stack HR management application that allows an admin to manage employee r
 
 ### Core
 - **Employee Management** - Add, view, and delete employees (ID, name, email, department)
-- **Attendance Management** - Mark attendance (Present/Absent) with date tracking
+- **Attendance Management** - Mark, edit, and delete attendance (Present/Absent) with date tracking
 - **RESTful API** with proper validation and error handling
 
 ### Bonus
@@ -55,7 +55,7 @@ HRMS/
 - Python 3.13+
 - Node.js 18+
 - PostgreSQL
-- uv (Python package manager)
+- [uv](https://docs.astral.sh/uv/) (Python package manager) — used for local development
 
 ### Backend Setup
 
@@ -90,6 +90,22 @@ npm run dev
 
 Frontend will be available at `http://localhost:5173`
 
+### Dependency Management: `uv` vs `pip`
+
+| Context | Tool | Why |
+|---------|------|-----|
+| **Local development** | `uv` | Fast dependency resolution and virtual environment management. Use `uv sync` to install and `uv run` to execute commands. Dependencies are defined in `pyproject.toml`. |
+| **Production / Deployment** (Render, etc.) | `pip` | Most hosting platforms don't support `uv` natively. A `requirements.txt` is provided for this purpose, generated from `pyproject.toml`. |
+
+**Adding a new dependency locally:**
+```bash
+cd backend
+uv add <package-name>                           # adds to pyproject.toml & installs
+uv pip compile pyproject.toml -o requirements.txt  # re-export for deployment
+```
+
+> **Note:** Always regenerate `requirements.txt` after adding/removing dependencies so that local (`pyproject.toml`) and deployment (`requirements.txt`) stay in sync.
+
 ## API Endpoints
 
 | Method | Endpoint                    | Description              |
@@ -101,6 +117,8 @@ Frontend will be available at `http://localhost:5173`
 | GET    | /api/employees/summary/     | Employee summary stats   |
 | GET    | /api/attendance/            | List attendance records  |
 | POST   | /api/attendance/            | Mark attendance          |
+| PUT    | /api/attendance/:id/        | Edit attendance status   |
+| DELETE | /api/attendance/:id/        | Delete attendance record |
 | GET    | /api/attendance/summary/    | Attendance summary stats |
 
 ### Query Parameters (Attendance)
