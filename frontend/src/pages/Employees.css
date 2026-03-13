@@ -53,3 +53,90 @@
   background: #fee2e2;
   color: #dc2626;
 }
+
+/* ========== Employees: mobile responsive ========== */
+@media (max-width: 768px) {
+  .employees-page {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  .employees-page .page-header {
+    gap: 0.75rem;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .employees-page .page-header .btn {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+  }
+
+  /* Only the table scrolls horizontally; page and card stay within viewport */
+  .employees-page .card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .employees-page .table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    border-radius: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .employees-page .table {
+    min-width: 580px;
+  }
+
+  .employees-page .table th,
+  .employees-page .table td {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .employees-page .emp-id {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.4rem;
+  }
+
+  .employees-page .dept-badge {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+  }
+
+  .employees-page .delete-confirm {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .employees-page .btn-icon {
+    padding: 0.5rem;
+    min-width: 36px;
+    min-height: 36px;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .employees-page .table {
+    min-width: 520px;
+  }
+
+  .employees-page .delete-confirm {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .employees-page .delete-confirm .btn {
+    min-height: 36px;
+  }
+}

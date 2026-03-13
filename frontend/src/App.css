@@ -251,7 +251,7 @@
   z-index: 99;
 }
 
-/* Table wrapper for horizontal scroll */
+/* Table wrapper for horizontal scroll - only this scrolls on mobile */
 .table-wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -262,6 +262,7 @@
   .main-content {
     margin-left: 0;
     padding: 1rem;
+    min-width: 0; /* allow flex shrink so page doesn't expand with table on Employees/Attendance */
   }
 
   .mobile-menu-btn {
